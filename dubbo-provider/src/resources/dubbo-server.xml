@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd        http://code.alibabatech.com/schema/dubbo        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!--提供方信息-->
+    <dubbo:application name="dubbo-server" owner="lhf" />
+
+    <!-- 注册中心-->
+    <dubbo:registry id="zk1" protocol="zookeeper"
+                    address="47.96.119.178:2181,47.96.119.178:2182,47.96.119.178:2183" />
+
+    <!--可以设置多个注册中心 id唯一 -->
+    <!--<dubbo:registry id="zk2" address="47.96.119.178:2181,47.96.119.178:2182,47.96.119.178:2183" />-->
+
+    <!--设置协议 dubbo协议基于dubbo-->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <!-- 设置多协议 hessian协议基于http-->
+    <dubbo:protocol name="hessian" port="8080"/>
+
+    <bean id="hello" class="com.xinho.dubbo.HelloImpl"/>
+
+    <bean id="hello1" class="com.xinho.dubbo.HelloImpl1"/>
+
+    <dubbo:service interface="com.xinho.dubbo.IHello" ref="hello"
+                   protocol="dubbo" registry="zk1" version="1.0.0"/>
+
+    <dubbo:service interface="com.xinho.dubbo.IHello" ref="hello1"
+                   protocol="dubbo" registry="zk1" version="1.0.1"/>
+
+</beans>
